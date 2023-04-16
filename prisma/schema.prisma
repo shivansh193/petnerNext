@@ -1,0 +1,18 @@
+// prisma/schema.prisma
+
+datasource db {
+  provider = "mongodb"
+  url      = "mongodb+srv://shivanshkalra796:User123@cluster0.3k7rolj.mongodb.net/test"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model MyModel {
+  id          ObjectId @id @default(dbgenerated()) @db.ObjectId
+  name        String
+  email       String
+  description String
+  date        DateTime
+}
