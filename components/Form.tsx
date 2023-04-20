@@ -1,39 +1,46 @@
-import { useState } from 'react';
-import axios from 'axios';
+import { useState } from "react";
 
 export default function Form() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [description, setDescription] = useState('');
-  const [date, setDate] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [description, setDescription] = useState("");
+  const [date, setDate] = useState("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     try {
-      const response = await axios.post('/api/create-record', {
-        name,
-        email,
-        description,
-        date,
+      const response = await fetch("/api/CreateRecord", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          description,
+          date,
+        }),
       });
-
-      console.log(response.data);
+      const result = await response.json();
+      console.log("Success:", result);
     } catch (error) {
-      console.error(error);
+      console.error("Error:", error);
+      return null;
     }
   };
 
-
-
-
-
   return (
-    <div className="flex flex-col md:flex-row bg-gray-50">
+    <div className="flex flex-col md:flex-row bg-gray-50 text-black">
       <div className="flex-1 p-8">
-        <h1 className="text-4xl font-bold mb-4">We Get you the perfect pet Partner!</h1>
+        <h1 className="text-4xl font-bold mb-4">
+          We Get you the perfect pet Partner!
+        </h1>
         <p className="text-lg mb-4">
-         Tell us about your requirement! Which breed of pet do you want? When do you want it and where do you want it, If your city is not mentioned in the menu, it is probably because we are not operational there yet! We are working to reach as many cities as we can! However, People from Bangalore, Gurgaon and Delhi can get one right now!
+          Tell us about your requirement! Which breed of pet do you want? When
+          do you want it and where do you want it, If your city is not mentioned
+          in the menu, it is probably because we are not operational there yet!
+          We are working to reach as many cities as we can! However, People from
+          Bangalore, Gurgaon and Delhi can get one right now!
         </p>
       </div>
       <form className="flex-1 p-8 bg-white" onSubmit={handleSubmit}>
@@ -70,17 +77,20 @@ export default function Form() {
             required
           ></textarea>
         </label>
-        <span className='text-gray-700'>Date</span>
+        <span className="text-gray-700">Date</span>
         <input
           type="date"
           name="date"
           value={date}
-          onChange={(e)=>setDate(e.target.value)}
+          onChange={(e) => setDate(e.target.value)}
         />
-        <button type="submit" className="bg-indigo-500 hover:bg-indigo-600 text-white py-2 px-4 rounded">
+        <button
+          type="submit"
+          className="bg-indigo-500 hover:bg-indigo-600 text-white py-2 px-4 rounded"
+        >
           Submit
         </button>
       </form>
     </div>
   );
-};
+}
